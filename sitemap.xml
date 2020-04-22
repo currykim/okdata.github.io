@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ok-data.github.io/2019/12/28/Proxmox_install/</loc>
+    
+    <lastmod>2020-04-22T06:14:19.562Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ok-data.github.io/2016/04/12/OracleInstall_2/</loc>
     
     <lastmod>2020-04-17T08:09:41.539Z</lastmod>
@@ -75,13 +82,6 @@
     <loc>https://ok-data.github.io/2019/12/27/Use_integrated_graphics_for_display%20-%20Ubuntu/</loc>
     
     <lastmod>2020-04-17T08:08:55.438Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ok-data.github.io/2019/12/28/Proxmox_install/</loc>
-    
-    <lastmod>2020-04-17T08:08:49.538Z</lastmod>
     
   </url>
   

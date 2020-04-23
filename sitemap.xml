@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ok-data.github.io/2019/12/28/Proxmox_install/</loc>
+    
+    <lastmod>2020-04-23T07:55:07.199Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ok-data.github.io/2019/12/27/Use_integrated_graphics_for_display%20-%20Ubuntu/</loc>
     
-    <lastmod>2020-04-23T07:01:15.780Z</lastmod>
+    <lastmod>2020-04-23T07:40:51.715Z</lastmod>
     
   </url>
   
@@ -40,13 +47,6 @@
     <loc>https://ok-data.github.io/2019/12/29/Proxmox_LXC/</loc>
     
     <lastmod>2020-04-22T06:25:50.294Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ok-data.github.io/2019/12/28/Proxmox_install/</loc>
-    
-    <lastmod>2020-04-22T06:24:03.231Z</lastmod>
     
   </url>
   

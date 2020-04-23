@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ok-data.github.io/2018/09/11/Yolov3/</loc>
+    
+    <lastmod>2020-04-23T05:50:33.190Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ok-data.github.io/2019/12/27/Use_integrated_graphics_for_display%20-%20Ubuntu/</loc>
     
     <lastmod>2020-04-23T05:48:09.336Z</lastmod>
@@ -103,13 +110,6 @@
     <loc>https://ok-data.github.io/2018/06/14/CUDA_UBUNTU/</loc>
     
     <lastmod>2020-04-17T08:09:06.272Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ok-data.github.io/2018/09/11/Yolov3/</loc>
-    
-    <lastmod>2020-04-17T08:09:00.236Z</lastmod>
     
   </url>
   

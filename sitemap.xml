@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://ok-data.github.io/2018/08/12/Proxmox_Hadoop_2/</loc>
+    
+    <lastmod>2020-04-23T05:02:45.065Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://ok-data.github.io/2018/08/11/Proxmox_Hadoop_1/</loc>
+    
+    <lastmod>2020-04-23T05:02:36.502Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://ok-data.github.io/2019/11/10/Zeppelin/</loc>
     
     <lastmod>2020-04-23T03:22:10.170Z</lastmod>
@@ -100,30 +114,9 @@
   </url>
   
   <url>
-    <loc>https://ok-data.github.io/2019/12/30/Proxmox_Hadoop_1/</loc>
-    
-    <lastmod>2020-04-17T08:08:38.512Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ok-data.github.io/2020/01/02/Proxmox_Hadoop_2/</loc>
-    
-    <lastmod>2020-04-17T08:08:33.987Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://ok-data.github.io/2016/04/12/OracleInstall_1/</loc>
     
     <lastmod>2020-04-17T08:08:22.912Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://ok-data.github.io/2016/04/10/PHP7upgrade/</loc>
-    
-    <lastmod>2020-04-17T08:08:13.806Z</lastmod>
     
   </url>
   

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.1"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>람다 아키텍쳐 - okdata</title><meta description="Data Engineering 관련 블로그입니다."><meta property="og:type" content="blog"><meta property="og:title" content="okdata"><meta property="og:url" content="https://ok-data.github.io/"><meta property="og:site_name" content="okdata"><meta property="og:description" content="Data Engineering 관련 블로그입니다."><meta property="og:locale" content="ko_KR"><meta property="og:image" content="https://ok-data.github.io/assets/logo2.png"><meta property="article:published_time" content="2020-06-19T15:00:00.000Z"><meta property="article:modified_time" content="2020-07-13T13:39:27.454Z"><meta property="article:author" content="okdata"><meta property="article:tag" content="Hadoop"><meta property="article:tag" content="Lambda"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/assets/logo2.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://ok-data.github.io"},"headline":"okdata","image":["https://ok-data.github.io/assets/logo2.png"],"datePublished":"2020-06-19T15:00:00.000Z","dateModified":"2020-07-13T13:39:27.454Z","author":{"@type":"Person","name":"okdata"},"description":"Data Engineering 관련 블로그입니다."}</script><link rel="canonical" href="https://ok-data.github.io/2020/06/20/Lambda_Arch/"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><script src="https://www.googletagmanager.com/gtag/js?id=UA-155090711-1" async></script><script>window.dataLayer = window.dataLayer || [];
+<html lang="ko"><head><meta charset="utf-8"><meta name="generator" content="Hexo 4.2.1"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>람다 아키텍쳐 - okdata</title><meta description="Data Engineering 관련 블로그입니다."><meta property="og:type" content="blog"><meta property="og:title" content="okdata"><meta property="og:url" content="https://ok-data.github.io/"><meta property="og:site_name" content="okdata"><meta property="og:description" content="Data Engineering 관련 블로그입니다."><meta property="og:locale" content="ko_KR"><meta property="og:image" content="https://ok-data.github.io/assets/logo2.png"><meta property="article:published_time" content="2020-06-19T15:00:00.000Z"><meta property="article:modified_time" content="2020-07-16T09:21:11.802Z"><meta property="article:author" content="okdata"><meta property="article:tag" content="Hadoop"><meta property="article:tag" content="Lambda"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/assets/logo2.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://ok-data.github.io"},"headline":"okdata","image":["https://ok-data.github.io/assets/logo2.png"],"datePublished":"2020-06-19T15:00:00.000Z","dateModified":"2020-07-16T09:21:11.802Z","author":{"@type":"Person","name":"okdata"},"description":"Data Engineering 관련 블로그입니다."}</script><link rel="canonical" href="https://ok-data.github.io/2020/06/20/Lambda_Arch/"><link rel="icon" href="/assets/favicon.png"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><script src="https://www.googletagmanager.com/gtag/js?id=UA-155090711-1" async></script><script>window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
     
@@ -91,6 +91,65 @@
 <li>Queue는 하나의 Consumer가 모든 메시지를 단 한번만 소비하게 하는 point-to-point 통신에 사용된다.</li>
 <li>Topic은 메시지가 한 번 발행된 후 consumer에 의해 여러번 소비 가능한 발행/구독 메커니즘을 제공하는데 사용된다. 따라서 메시지는 컨슈머마다 한 번씩 여러번 소비될 수 있다. </li>
 </ul>
+<h2 id="Lambda-Architecture-원칙"><a href="#Lambda-Architecture-원칙" class="headerlink" title="Lambda Architecture 원칙"></a>Lambda Architecture 원칙</h2><h3 id="Fault-tolerance-내고장성"><a href="#Fault-tolerance-내고장성" class="headerlink" title="Fault-tolerance, 내고장성"></a>Fault-tolerance, 내고장성</h3><p>하드웨어, 소프트웨어, 인간의 실수에 대한 내고장성은 람다 패턴의 일부가 되야 한다.</p>
+<p>빅데이터를 다루기 때문에 어떤 유형의 장애이던 복구가 가능해야한다. </p>
+<h3 id="Immutable-Data-데이터-불변"><a href="#Immutable-Data-데이터-불변" class="headerlink" title="Immutable Data, 데이터 불변"></a>Immutable Data, 데이터 불변</h3><p>다양한 데이터 원천으로 수집된 데이터들은 원본 형태를 유지해야 한다. 더 중요한 것은 이 데이터가 근본적으로 불변형으로 저장되야 한다는 점이다. </p>
+<p>데이터 불변을 유지하기 위해 일정 수준의 인적 실수에 유의해야 하며, 데이터 유실과 변경과 관련된 오류 발생을 제거해야한다.</p>
+<h3 id="Re-computation-principle-재연산의-원칙"><a href="#Re-computation-principle-재연산의-원칙" class="headerlink" title="Re-computation principle, 재연산의 원칙"></a>Re-computation principle, 재연산의 원칙</h3><p>원본 데이터를 데이터 레이크에서 항상 사용할 수 있기 때문에 원본 데이터에 새로운 연산을 수행해 신규 요구 사항을 만족하게 할 수 있다. </p>
+<p>이를 위해 재연산을 수행할 때 문제가 발생할 수 있는 Schema 적용 방식보다는 Schema가 없는 Schema-less 구조로 데이터를 저장한다.</p>
+<p><img src="/assets/Lambda_Arch/2020-07-16-17-17-13.png" alt=""></p>
+<h2 id="람다-장-단점"><a href="#람다-장-단점" class="headerlink" title="람다 장/단점"></a>람다 장/단점</h2><h3 id="장점"><a href="#장점" class="headerlink" title="장점"></a>장점</h3><ul>
+<li><p>데이터는 원본 형태로 저장되므로, 언제든지 새로운 알고리즘이나 분석 기법 또는 신규 비즈니스 사용 사례를 적용할 수 있다. 이는 스키마를 적용해 저장하는 기존의 RDBMS 형태의 데이터 웨어하우스가 갖지 못하는 장점이다. </p>
+</li>
+<li><p>Namely recomputation, 재연산이라 불리는 하나의 핵심 원칙을 통해 큰 문제 없이 fault-tolerance를 얻을 수 있다.</p>
+</li>
+<li><p>서로 다른 역할을 하는 계층으로 서로 다른 기술을 가질 수 있으며, 확장성을 가진다. </p>
+</li>
+<li><p>Pluggable 가능한 아키텍처를 제공하므로, 신규 혹은 기존에 사용하는 유형의 원천 데이터를 추가하는 경우 큰 문제없이 시스템에 적용할 수 있다. </p>
+</li>
+</ul>
+<h3 id="단점"><a href="#단점" class="headerlink" title="단점"></a>단점</h3><ul>
+<li><p>복잡성, 배치와 속도계층을 계속해서 동기화하기 위한 비용과 노력이 필요하며, 지속적으로 관찰하고 제어해야한다.</p>
+</li>
+<li><p>유지보수 어려움</p>
+</li>
+<li><p>많은 기술에 대한 전문성</p>
+</li>
+<li><p>이 패턴은 꽤 오래 사용됐지만 관련 도구들이 미성숙한 상태이므로 아직 진화중이다.</p>
+</li>
+<li><p>CI/CD는 필수적이며 많은 부분을 자동화하는 것은 힘들다.</p>
+</li>
+<li><p>많은 고사양의 하드웨어 요구사항</p>
+</li>
+<li><p>같은 작업을 두 번씩 한다, 때문에 일부에서는 비난을 받기도 한다.</p>
+</li>
+</ul>
+<h2 id="람다-아키텍처-응용"><a href="#람다-아키텍처-응용" class="headerlink" title="람다 아키텍처 응용"></a>람다 아키텍처 응용</h2><ul>
+<li>엔터프라이즈급 로그 분석</li>
+</ul>
+<p>로그데이터는 큰 용량을 가지며 아주 빠르게 생성된다. 람다 패턴을 통해 실시간 로그들을 검증할 수 있으며, 지나간 로그들을 총분히 이해하고 실시간 통찰력을 얻을 수 있다.</p>
+<ul>
+<li>센서 데이터 수집 및 분석</li>
+</ul>
+<p>IoT환경에서는 많은 수의 센서 데이터를 확보하게 되면서 확장성을 지닌 솔루션인 람다 아키텍쳐를 활용하여 센서 데이터에 대한 실시간 분석이 가능하다</p>
+<ul>
+<li>실시간 메일 플랫폼 통계</li>
+</ul>
+<p>비즈니스 애플리케이션과 소셜 플랫폼에서 발생하는 대규모 데이터와 함께 이메일 마케팅 플랫폼의 역할은 매우 중요하다. 다수의 이메일 플랫폼은 전송된 이메일과 관련된 꽤 많은 양의 추적 상태별 데이터를 제공한다. </p>
+<ul>
+<li>실시간 운동 경기 분석</li>
+</ul>
+<p>경기에 대한 다양한 통계와 분석을 보여 주기 위해 이력 배치 뷰와 현재 경기의 실시간 데이터를 이용해 정보를 생성할 수 있다.</p>
+<ul>
+<li><p>추천 엔진</p>
+</li>
+<li><p>보안 위협 분석</p>
+</li>
+</ul>
+<p>보안 위협 분석에 필요한 로그는 다양한 하드웨어와 비즈니스 애플리케이션을 포함한 여러 소프트웨어 컴포넌트에서 얻을 수 있으며, 보안 위협을 분석하기 위해 과거 데이터와 비교를 수행할 수 있다. </p>
+<h1 id="Kappa-Architecture-카파-아키텍처"><a href="#Kappa-Architecture-카파-아키텍처" class="headerlink" title="Kappa Architecture, 카파 아키텍처"></a>Kappa Architecture, 카파 아키텍처</h1><p>카파 아키텍처는 람다의 간소화 버전으로 유사하지만, 배치 계층을 제거하고 속도 계층만 유지한다. </p>
+<p>항상 처음부터 연산을 수행하는 배치 계층을 두지 않고 실시간이나 속도 계층에서 모든 작업을 수행한다.</p>
+<p><img src="/assets/Lambda_Arch/2020-07-16-18-21-07.png" alt=""></p>
 <p><span>Photo by <a href="https://unsplash.com/@samthewam24?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Samuel  Sianipar</a> on <a href="https://unsplash.com/s/photos/pipe?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span></p>
 </div><div class="article-tags size-small is-uppercase mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Hadoop/">Hadoop</a><a class="link-muted mr-2" rel="tag" href="/tags/Lambda/">Lambda</a></div><div class="a2a_kit a2a_kit_size_32 a2a_default_style"><a class="a2a_dd" href="https://www.addtoany.com/share"></a><a class="a2a_button_facebook"></a><a class="a2a_button_twitter"></a><a class="a2a_button_telegram"></a><a class="a2a_button_whatsapp"></a><a class="a2a_button_reddit"></a></div><script src="https://static.addtoany.com/menu/page.js" defer></script></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/04/10/proxmox-windows/"><span class="level-item">Proxmox VM에 Windows 10 설치하기</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">댓글</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
             this.page.url = 'https://ok-data.github.io/2020/06/20/Lambda_Arch/';
@@ -112,7 +171,7 @@
                     fold: 'unfolded'
                 }
             }
-        };</script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script src="/js/animation.js"></script><a id="back-to-top" title="Zurück nach oben" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+        };</script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to Top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
             if (typeof $.fn.lightGallery === 'function') {
                 $('.article').lightGallery({ selector: '.gallery-item' });
             }
